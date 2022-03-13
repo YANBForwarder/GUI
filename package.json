@@ -8,10 +8,10 @@
     "dist": "electron-builder"
   },
   "build": {
-    "appId": "com.olmectron.yanbf.gui",
+    "appId": "ca.hansol.yanbf.gui",
     "npmRebuild": false,
     "mac": {
-      "category": "com.olmectron.yanbf.gui"
+      "category": "ca.hansol.yanbf.gui"
     },
     "win": {
       "target": [
