@@ -1,6 +1,6 @@
 {
   "name": "YANBFGenerator",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "An Electron GUI application for YANBF Generator",
   "main": "main.js",
   "scripts": {
@@ -17,7 +17,8 @@
       "target": [
         "portable"
       ]
-    }
+    },
+    "artifactName": "${productName}.${ext}"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [

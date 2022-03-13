@@ -1,0 +1,85 @@
+name: Build nightly
+
+on:
+  push:
+    branches: ["*"]
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: ["*"]
+    paths-ignore:
+      - 'README.md'
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-2019
+    name: Build Windows
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Create package
+        run: |
+          npm run dist
+          mkdir actions
+          copy dist\YANBFGenerator.exe actions\YANBF-GUI.exe
+        shell: cmd
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          path: actions
+          name: YANBF-GUI-Windows
+
+  macos:
+    runs-on: macos-11
+    name: Build macOS
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Create package
+        run: |
+          npm run dist
+          mkdir actions
+          cp dist/YANBFGenerator.dmg actions/YANBF-GUI.dmg
+        shell: cmd
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          path: actions
+          name: YANBF-GUI-macOS
+
+  linux:
+    runs-on: ubuntu-latest
+    name: Build Linux
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Create package
+        run: |
+          npm run dist
+          mkdir actions
+          cp dist/YANBFGenerator.AppImage actions/YANBF-GUI.AppImage
+        shell: cmd
+      - name: Publish
+        uses: actions/upload-artifact@v2
+        with:
+          path: actions
+          name: YANBF-GUI-Linux
