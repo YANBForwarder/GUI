@@ -21,8 +21,8 @@ jobs:
         run: |
           npm run dist
           mkdir actions
-          copy dist\YANBFGenerator.exe actions\YANBF-GUI.exe
-        shell: cmd
+          cp dist/YANBFGenerator.exe actions/YANBF-GUI.exe
+        shell: bash
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
@@ -46,7 +46,6 @@ jobs:
           npm run dist
           mkdir actions
           cp dist/YANBFGenerator.dmg actions/YANBF-GUI.dmg
-        shell: cmd
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
@@ -70,7 +69,6 @@ jobs:
           npm run dist
           mkdir actions
           cp dist/YANBFGenerator.AppImage actions/YANBF-GUI.AppImage
-        shell: cmd
       - name: Publish
         uses: actions/upload-artifact@v2
         with:
@@ -89,6 +87,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            YANBF-GUI-Windows.zip
-            YANBF-GUI-macOS.zip
-            YANBF-GUI-Linux.zip
+            YANBF-GUI-Windows/YANBF-GUI.exe
+            YANBF-GUI-macOS/YANBF-GUI.dmg
+            YANBF-GUI-Linux/YANBF-GUI.AppImage

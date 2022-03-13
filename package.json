@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder -p never"
   },
   "build": {
     "appId": "ca.hansol.yanbf.gui",
@@ -19,6 +19,7 @@
       ]
     },
     "artifactName": "${productName}.${ext}"
+
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
