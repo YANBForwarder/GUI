@@ -881,6 +881,24 @@ if("loading"===alt){this.alt=this.getAttribute("aria-label")||alt}else{this.__se
               <paper-icon-button icon="delete" on-click="removeFiles"></paper-icon-button>
               </div>
               </template>
+
+              <div>
+                <upload-button sound accept=".wav" sound-file="{{lastNdsFile.bannerSoundFile}}" sound-url="{{lastNdsFile.bannerSoundUrl}}" manual-upload>
+                  <paper-button on-click="setBannerSound">
+                    <iron-icon icon="image:audiotrack" style="margin-right: 8px;">
+                    </iron-icon>Set Sound
+                  </paper-button>
+                </upload-button>
+              </div>
+              <template is="dom-if" if="[[lastNdsFile.bannerSoundUrl]]">
+                <div style="display: flex; align-items: center;">
+                  <div>[[lastNdsFile.bannerSoundFile.path]]
+                  </div>
+                  <paper-icon-button icon="delete" on-click="removeSoundFiles">
+                  </paper-icon-button>
+                </div>
+              </template>
+
               <div><paper-button on-click="dispatchRemove"><iron-icon icon="delete" style="margin-right: 8px;"></iron-icon>Remove NDS File</paper-button></div>
            
 
@@ -895,7 +913,26 @@ if("loading"===alt){this.alt=this.getAttribute("aria-label")||alt}else{this.__se
 
     `}dispatchRemove(){this.set("expanded",!1);var context=this;setTimeout(function(){context.dispatchEvent(new CustomEvent("delete-clicked",{detail:{ndsFile:context.data}}))},250)}setCanvas(canvas){var element=this.shadowRoot.querySelector(".canvas-container");while(element.firstChild){element.removeChild(element.lastChild)}if(null!=canvas){element.appendChild(canvas)}}toggleExpand(){this.set("expanded",!this.expanded);if(!0==this.expanded){this.dispatchEvent(new CustomEvent("expand-done",{detail:{ndsFile:this.data}}))}}_myDataChanged(data){//console.log("Data",data);
 var context=this;if(this.lastNdsFile){this.lastNdsFile.kill()}if(null!=data){if(data.name){this.set("name",data.name)}if(data.publisher){this.set("publisher",data.publisher)}}if(null!=data&&null!=data.file){this.set("lastNdsFile",new NDSFile(data.file,function(internalData){//  console.log("DATA 3D!",internalData);
-context.set("name",internalData.name);context.set("publisher",internalData.publisher);context.set("tid",internalData.tid);context.set("overrideTid",internalData.overrideTid);context.set("gameTitle",internalData.gameTitle);context.set("gamePath",internalData.gamePath);if(internalData.canvasObject)context.setCanvas(internalData.canvasObject)}))}}reloadTid(){this.lastNdsFile.reloadTid()}overTidChanged(overrideTid){if(null!=this.lastNdsFile&&null!=overrideTid)this.lastNdsFile.overrideTid=overrideTid}titleChanged(gameTitle){if(null!=this.lastNdsFile&&null!=gameTitle){this.lastNdsFile.gameTitle=gameTitle}}pathChanged(gamePath){if(null!=this.lastNdsFile&&null!=gamePath){this.lastNdsFile.gamePath=gamePath}}openFileInExplorer(e){e.preventDefault();e.stopPropagation();var url=this.lastNdsFile.lastSuccessCia,path=require("path"),output=this.lastNdsFile.outputPath;console.log("URL",url);if(null!=url){const{shell}=require("electron");shell.showItemInFolder(path.resolve(url))}}openErrorLog(e){e.preventDefault();e.stopPropagation();var url=this.lastNdsFile.lastErrorLog,path=require("path");console.log("URL",url);if(null!=url){const{shell}=require("electron");shell.openPath(path.resolve(url))}}removeFiles(){this.set("lastNdsFile.boxArtUrl",null);this.set("lastNdsFile.boxArtFile",null);this.shadowRoot.querySelector("upload-button").clearFile()}static get properties(){return{boxArtUrl:{type:String,notify:!0,value:null},boxArtFile:{type:Object,notify:!0,value:null},running:{type:Boolean,notify:!0,value:!1},finished:{type:Boolean,notify:!0,value:!1},hadSuccess:{type:Boolean,notify:!0,value:!1},gameTitle:{type:String,notify:!0,observer:"titleChanged"},gamePath:{type:String,notify:!0,observer:"pathChanged"},overrideTid:{type:String,notify:!0,observer:"overTidChanged"},expanded:{type:Boolean,notify:!0,value:!1},data:{type:Object,notify:!0,observer:"_myDataChanged"}}}}window.customElements.define("game-item",GameItem);class GameList extends(0,_myApp.ElectronMixin)(_myApp.PolymerElement){static get template(){return _myApp.html$1`
+context.set("name",internalData.name);context.set("publisher",internalData.publisher);context.set("tid",internalData.tid);context.set("overrideTid",internalData.overrideTid);context.set("gameTitle",internalData.gameTitle);context.set("gamePath",internalData.gamePath);if(internalData.canvasObject)context.setCanvas(internalData.canvasObject)}))}}reloadTid(){this.lastNdsFile.reloadTid()}overTidChanged(overrideTid){if(null!=this.lastNdsFile&&null!=overrideTid)this.lastNdsFile.overrideTid=overrideTid}titleChanged(gameTitle){if(null!=this.lastNdsFile&&null!=gameTitle){this.lastNdsFile.gameTitle=gameTitle}}pathChanged(gamePath){if(null!=this.lastNdsFile&&null!=gamePath){this.lastNdsFile.gamePath=gamePath}}openFileInExplorer(e){e.preventDefault();e.stopPropagation();var url=this.lastNdsFile.lastSuccessCia,path=require("path"),output=this.lastNdsFile.outputPath;console.log("URL",url);if(null!=url){const{shell}=require("electron");shell.showItemInFolder(path.resolve(url))}}openErrorLog(e){e.preventDefault();e.stopPropagation();var url=this.lastNdsFile.lastErrorLog,path=require("path");console.log("URL",url);if(null!=url){const{shell}=require("electron");shell.openPath(path.resolve(url))}}removeImageFiles(){this.set("lastNdsFile.boxArtUrl",null);this.set("lastNdsFile.boxArtFile",null);this.shadowRoot.querySelector("upload-button").clearFile()}
+
+removeSoundFiles() {
+  this.set("lastNdsFile.bannerSoundUrl", null);
+  this.set("lastNdsFile.bannerSoundFile", null);
+  this.shadowRoot.querySelector("upload-button").clearFile()
+}
+
+static get properties(){return{boxArtUrl:{type:String,notify:!0,value:null},boxArtFile:{type:Object,notify:!0,value:null},
+bannerSoundUrl: {
+  type: String,
+  notify: !0,
+  value: null
+},
+bannerSoundFile: {
+  type: Object,
+  notify: !0,
+  value: null
+},
+running:{type:Boolean,notify:!0,value:!1},finished:{type:Boolean,notify:!0,value:!1},hadSuccess:{type:Boolean,notify:!0,value:!1},gameTitle:{type:String,notify:!0,observer:"titleChanged"},gamePath:{type:String,notify:!0,observer:"pathChanged"},overrideTid:{type:String,notify:!0,observer:"overTidChanged"},expanded:{type:Boolean,notify:!0,value:!1},data:{type:Object,notify:!0,observer:"_myDataChanged"}}}}window.customElements.define("game-item",GameItem);class GameList extends(0,_myApp.ElectronMixin)(_myApp.PolymerElement){static get template(){return _myApp.html$1`
       <style include="shared-styles">
         :host {
           display: block;
@@ -936,7 +973,13 @@ context.set("name",internalData.name);context.set("publisher",internalData.publi
       </template>
       </div>
     `}removeGame(e){var ndsFile=e.detail.ndsFile;this.splice("ndsFiles",this.ndsFiles.indexOf(ndsFile),1);MiscUtils.Toast.show("File removed successfully")}pushFiles(files){if(!this.ndsFiles){this.set("ndsFiles",[])}for(var i=0;i<files.length;i++){//      var ndsFile=new NDSFile(files[i],function());
-this.push("ndsFiles",{file:files[i]})}}_getCurrentPath(){const{remote}=require("electron");if(null!=this.directoryPath&&""!=this.directoryPath.trim()){return this.directoryPath.trim()}var camino=remote.process.env.PORTABLE_EXECUTABLE_DIR;if(!camino){camino="."}return camino}callPythonGenerator(template){var context=this,ndsFile=template.lastNdsFile;console.log("NDS FILE",ndsFile);const spawn=require("child_process").spawn;var camino=ndsFile.file.path,outputName="YANBF-"+ndsFile.file.name.substring(0,ndsFile.file.name.length-4).replace(/ /g,"_")+".cia",outputLog="YANBF-"+ndsFile.file.name.substring(0,ndsFile.file.name.length-4).replace(/ /g,"_")+".log";console.log("Output name",outputName);var arrayArgs=[];arrayArgs.push(camino);if(null!=ndsFile.boxArtFile){arrayArgs.push("-b");arrayArgs.push(ndsFile.boxArtFile.path);console.log("Path File",ndsFile.boxArtFile.path)}console.log("Array args",arrayArgs);const pythonProcess=spawn(context._getCurrentPath()+"/generator", arrayArgs,{cwd:this._getCurrentPath()});template.set("lastNdsFile.running",!0);template.set("lastNdsFile.finished",!1);template.set("lastNdsFile.hadSuccess",!1);return new Promise(function(resolve,reject){/*    pythonProcess.on("error",function(err){
+this.push("ndsFiles",{file:files[i]})}}_getCurrentPath(){const{remote}=require("electron");if(null!=this.directoryPath&&""!=this.directoryPath.trim()){return this.directoryPath.trim()}var camino=remote.process.env.PORTABLE_EXECUTABLE_DIR;if(!camino){camino="."}return camino}callPythonGenerator(template){var context=this,ndsFile=template.lastNdsFile;console.log("NDS FILE",ndsFile);const spawn=require("child_process").spawn;var camino=ndsFile.file.path,outputName="YANBF-"+ndsFile.file.name.substring(0,ndsFile.file.name.length-4).replace(/ /g,"_")+".cia",outputLog="YANBF-"+ndsFile.file.name.substring(0,ndsFile.file.name.length-4).replace(/ /g,"_")+".log";console.log("Output name",outputName);var arrayArgs=[];arrayArgs.push(camino);if(null!=ndsFile.boxArtFile){arrayArgs.push("-b");arrayArgs.push(ndsFile.boxArtFile.path);console.log("Path File",ndsFile.boxArtFile.path)}
+if (null != ndsFile.bannerSoundFile) {
+  arrayArgs.push("-s");
+  arrayArgs.push(ndsFile.bannerSoundFile.path);
+  console.log("Path File", ndsFile.bannerSoundFile.path)
+}
+console.log("Array args",arrayArgs);const pythonProcess=spawn(context._getCurrentPath()+"/generator", arrayArgs,{cwd:this._getCurrentPath()});template.set("lastNdsFile.running",!0);template.set("lastNdsFile.finished",!1);template.set("lastNdsFile.hadSuccess",!1);return new Promise(function(resolve,reject){/*    pythonProcess.on("error",function(err){
             console.log("Python error",err);
           });
           pythonProcess.on("close",function(err){

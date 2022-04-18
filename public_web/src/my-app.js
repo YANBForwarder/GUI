@@ -13573,7 +13573,41 @@ if(e&&e.target===this&&"opacity"===e.propertyName){if(this.opened){this._finishR
    <input type="file" id="_fileButton" on-click="clickSlot" multiple$="[[multiple]]" invisible$="[[!enabled]]" on-change="_filesSelectedHandler" class="input-file"/>
  
      `}_selectedLocalFilesChanged(files){this.dispatchEvent(new CustomEvent("file-selected",{detail:{files:files}}))}clearFile(){this.shadowRoot.querySelector("input").value=""}_selectedLocalFileChanged(file){this.dispatchEvent(new CustomEvent("image-selected",{detail:{file:file}}));if(!0==this.photo&&null!=file){var context=this;// console.log("eefile",e.detail.file);
-this.set("dataFile",file);this.set("imageFile",file);if(FileReader&&file){var fr=new FileReader,context=this;fr.onload=function(){context.set("imageUrl",fr.result)};fr.readAsDataURL(file)}}else{this.set("imageFile",null);this.set("imageUrl",null)}this.dispatchEvent(new CustomEvent("file-selected",{detail:{file:file}}))}clearFile(){}_accChanged(string){if(null!=string)this.$._fileButton.accept=string}static get properties(){return{multiple:{type:Boolean,notify:!0,value:!1},accept:{type:String,notify:!0,observer:"_accChanged"},options:{type:Object,notify:!0,observer:"_optionsChanged"},imageUrl:{type:String,notify:!0,reflectToAttribute:!0,value:null},imageFile:{type:Object,notify:!0,reflectToAttribute:!0,value:null},_selectedUploadButtonFile:{type:String,notify:!0,value:null,observer:"_selectedLocalFileChanged"},_selectedUploadButtonFiles:{type:Object,notify:!0,value:null,observer:"_selectedLocalFilesChanged"},manualUpload:{type:Boolean,notify:!0,value:!1},photo:{type:Boolean,notify:!0,value:!1},crop:{type:Boolean,notify:!0,value:!1},enabled:{type:Boolean,notify:!0,value:!0}}}clickSlot(){if(!this.enabled){return}this.$.slot.click()}_optionsChanged(options){if(options){if(options.fileTypes){//   console.log("Type",type);
+this.set("dataFile",file);this.set("imageFile",file);if(FileReader&&file){var fr=new FileReader,context=this;fr.onload=function(){context.set("imageUrl",fr.result)};fr.readAsDataURL(file)}}
+
+else if (!0 == this.sound && null != file) {
+  var context = this; // console.log("eefile",e.detail.file);
+  this.set("dataFile", file);
+  this.set("soundFile", file);
+  if (FileReader && file) {
+    var fr = new FileReader,
+      context = this;
+    fr.onload = function () {
+      context.set("soundUrl", fr.result)
+    };
+    fr.readAsDataURL(file)
+  }
+}
+
+else{this.set("imageFile",null);this.set("imageUrl",null);this.set("soundFile", null);this.set("soundUrl", null);}this.dispatchEvent(new CustomEvent("file-selected",{detail:{file:file}}))}clearFile(){}_accChanged(string){if(null!=string)this.$._fileButton.accept=string}static get properties(){return{multiple:{type:Boolean,notify:!0,value:!1},accept:{type:String,notify:!0,observer:"_accChanged"},options:{type:Object,notify:!0,observer:"_optionsChanged"},imageUrl:{type:String,notify:!0,reflectToAttribute:!0,value:null},imageFile:{type:Object,notify:!0,reflectToAttribute:!0,value:null},_selectedUploadButtonFile:{type:String,notify:!0,value:null,observer:"_selectedLocalFileChanged"},_selectedUploadButtonFiles:{type:Object,notify:!0,value:null,observer:"_selectedLocalFilesChanged"},manualUpload:{type:Boolean,notify:!0,value:!1},photo:{type:Boolean,notify:!0,value:!1},
+sound: {
+  type: Boolean,
+  notify: !0,
+  value: !1
+},
+soundUrl: {
+  type: String,
+  notify: !0,
+  reflectToAttribute: !0,
+  value: null
+},
+soundFile: {
+  type: Object,
+  notify: !0,
+  reflectToAttribute: !0,
+  value: null
+},
+crop:{type:Boolean,notify:!0,value:!1},enabled:{type:Boolean,notify:!0,value:!0}}}clickSlot(){if(!this.enabled){return}this.$.slot.click()}_optionsChanged(options){if(options){if(options.fileTypes){//   console.log("Type",type);
 this.$._fileButton.accept=options.fileTypes.join(",");//                inputFile.accept=type.join(",");
 }}}executeUpload(){if(this._selectedUploadButtonFile)this._actualUploadAction(this._selectedUploadButtonFile);else MiscUtils.Toast.show("You didn't select a file")}_filesSelectedHandler(e){var options=this.options,context=this;if(null==options&&!0!=this.manualUpload){MiscUtils.Toast.show("Error. Verify your files");console.error("You haven't set an options object");return}/*  var type=options.fileTypes;
             var path=options.path;
